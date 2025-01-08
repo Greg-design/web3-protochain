@@ -1,0 +1,26 @@
+{
+  "name": "protochain",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "compile": "npx tsc",
+    "start": "node ./dist/blockchain.js",
+    "dev": "npx nodemon --watch ./src/ --exec npx ts-node ./src/blockchain.ts -e ts",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/crypto-js": "^4.2.2",
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "crypto-js": "^4.2.0"
+  }
+}

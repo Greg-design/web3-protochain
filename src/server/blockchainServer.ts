@@ -7,8 +7,8 @@ const PORT: number = 3000;
 
 const app = express();
 
-// middleware
-app.use(morgan("tiny"));
+if (process.argv.includes("--run")) app.use(morgan("tiny"));
+
 app.use(express.json());
 
 const blockchain = new Blockchain();
@@ -54,6 +54,9 @@ app.post("/blocks", (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Blockchain server is running at ${PORT}}`);
-});
+if (process.argv.includes("--run"))
+  app.listen(PORT, () => {
+    console.log(`Blockchain server is running at ${PORT}}`);
+  });
+
+export { app };

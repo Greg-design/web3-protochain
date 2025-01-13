@@ -1,8 +1,10 @@
 import { describe, expect, jest, test } from "@jest/globals";
 import Block from "../src/lib/block";
 import Blockchain from "../src/lib/blockchain";
+import Transaction from "../src/lib/transaction";
 
 jest.mock("../src/lib/block");
+jest.mock("../src/lib/transaction");
 
 describe("Blockchain tests", () => {
   test("Should has genesis blocks", () => {
@@ -17,7 +19,17 @@ describe("Blockchain tests", () => {
 
   test("Should be valid (two blocks)", () => {
     const blockchain = new Blockchain();
-    blockchain.addBlock(new Block({ index: 1, previousHash: blockchain.blocks[0].hash, data: "Block 2" } as Block));
+    blockchain.addBlock(
+      new Block({
+        index: 1,
+        previousHash: blockchain.blocks[0].hash,
+        transactions: [
+          new Transaction({
+            data: "Block 2",
+          } as Transaction),
+        ],
+      } as Block)
+    );
     expect(blockchain.isValid().success).toEqual(true);
   });
 
@@ -27,7 +39,11 @@ describe("Blockchain tests", () => {
       new Block({
         index: 1,
         previousHash: blockchain.blocks[0].hash,
-        data: "Block 2",
+        transactions: [
+          new Transaction({
+            data: "Block 2",
+          } as Transaction),
+        ],
       } as Block)
     );
     blockchain.blocks[1].index = -1;
@@ -37,7 +53,15 @@ describe("Blockchain tests", () => {
   test("Should add block", () => {
     const blockchain = new Blockchain();
     const res = blockchain.addBlock(
-      new Block({ index: 1, previousHash: blockchain.blocks[0].hash, data: "Block 2" } as Block)
+      new Block({
+        index: 1,
+        previousHash: blockchain.blocks[0].hash,
+        transactions: [
+          new Transaction({
+            data: "Block 2",
+          } as Transaction),
+        ],
+      } as Block)
     );
     expect(res.success).toEqual(true);
   });
@@ -50,7 +74,15 @@ describe("Blockchain tests", () => {
 
   test("Should NOT add block", () => {
     const blockchain = new Blockchain();
-    const block = new Block({ index: -1, previousHash: blockchain.blocks[0].hash, data: "Block 2" } as Block);
+    const block = new Block({
+      index: -1,
+      previousHash: blockchain.blocks[0].hash,
+      transactions: [
+        new Transaction({
+          data: "Block 2",
+        } as Transaction),
+      ],
+    } as Block);
     const res = blockchain.addBlock(block);
     expect(res.success).toEqual(false);
   });

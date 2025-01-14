@@ -1,5 +1,6 @@
 import request from "supertest";
 import Block from "../src/lib/block";
+import Transaction from "../src/lib/transaction";
 import { app } from "../src/server/blockchainServer";
 
 // testes automatizados
@@ -61,5 +62,19 @@ describe("BlockchainServer Tests", () => {
     const res = await request(app).post("/blocks/").send(block);
 
     expect(res.status).toEqual(400);
+  });
+
+  test("GET /transactions/:hash - Should get transaction", async () => {
+    const res = await request(app).get("/transactions/abc");
+
+    expect(res.status).toEqual(200);
+    expect(res.body.mempoolIndex).toEqual(0);
+  });
+
+  test("POST /transactions/ - Should add tx", async () => {
+    const tx = new Transaction({ data: "tx1" } as Transaction);
+    const res = await request(app).post("/transactions/").send(tx);
+
+    expect(res.status).toEqual(201);
   });
 });

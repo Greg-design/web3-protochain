@@ -1,4 +1,5 @@
 import BlockInfo from "../blockInfo";
+import TransactionSearch from "../transactionSearch";
 import TransactionType from "../transactionType";
 import Validation from "../validation";
 import Block from "./block";
@@ -9,9 +10,11 @@ import Transaction from "./transaction";
  */
 export default class Blockchain {
   blocks: Block[];
+  mempool: Transaction[];
   nextIndex: number = 0;
 
   constructor() {
+    this.mempool = [];
     this.blocks = [
       new Block({
         index: 0,
@@ -40,6 +43,23 @@ export default class Blockchain {
     this.blocks.push(block);
     this.nextIndex++;
     return new Validation();
+  }
+
+  addTransaction(transaction: Transaction): Validation {
+    const validation = transaction.isValid();
+    if (!validation.success) return validation;
+
+    this.mempool.push(transaction);
+    return new Validation();
+  }
+
+  getTransaction(hash: string): TransactionSearch {
+    return {
+      mempoolIndex: 0,
+      transaction: {
+        hash,
+      },
+    } as TransactionSearch;
   }
 
   getBlock(hash: string): Block | undefined {

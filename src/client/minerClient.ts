@@ -20,6 +20,12 @@ let totalMined = 0;
 async function mine() {
   console.log("Obtendo informações do próximo bloco...");
   const { data } = await axios.get(`${BLOCKCHAIN_SERVER}blocks/next`);
+  if (!data) {
+    console.log("Não encontrou transações. Esperando...");
+    return setTimeout(() => {
+      mine();
+    }, 5000);
+  }
   const blockInfo = data as BlockInfo;
 
   const newBlock = Block.fromBlockInfo(blockInfo);

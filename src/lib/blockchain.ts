@@ -1,6 +1,7 @@
 import Block from "./block";
 import BlockInfo from "./blockInfo";
 import Transaction from "./transaction";
+import TransactionInput from "./transactionInput";
 import TransactionSearch from "./transactionSearch";
 import TransactionType from "./transactionType";
 import Validation from "./validation";
@@ -26,7 +27,7 @@ export default class Blockchain {
         transactions: [
           new Transaction({
             type: TransactionType.FEE,
-            data: new Date().toString(),
+            txInput: new TransactionInput(),
           } as Transaction),
         ],
       } as Block),

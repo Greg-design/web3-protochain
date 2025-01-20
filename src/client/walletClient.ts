@@ -32,6 +32,7 @@ function menu() {
     console.log("2 - Recuperar Wallet");
     console.log("3 - Saldo Wallet");
     console.log("4 - Enviar Transação(tx)");
+    console.log("5 - Consultar Transação(tx)");
 
     rl.question("Escolha sua opção", (answer) => {
       switch (answer) {
@@ -46,6 +47,9 @@ function menu() {
           break;
         case "4":
           sendTx();
+          break;
+        case "5":
+          searchTx();
           break;
         default: {
           console.log("Opção inválida!");
@@ -150,6 +154,15 @@ function sendTx() {
   });
 
   preMenu();
+}
+
+function searchTx() {
+  console.clear();
+  rl.question(`Seu hash de tx: `, async (hash) => {
+    const response = await axios.get(`${BLOCKCHAIN_SERVER}transactions/${hash}`);
+    console.log(response.data);
+    return preMenu();
+  });
 }
 
 menu();

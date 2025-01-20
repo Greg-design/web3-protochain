@@ -82,7 +82,7 @@ export default class Blockchain {
           txInput: new TransactionInput(),
         } as Transaction),
       ],
-      difficulty: 0,
+      difficulty: 1,
       previousHash: this.getLastBlock().hash,
       index: 1,
       feePerTx: this.getFeePerTx(),

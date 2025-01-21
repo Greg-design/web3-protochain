@@ -1,15 +1,17 @@
 import { describe, expect, test } from "@jest/globals";
+import TransactionOutput from "../src/lib/__mocks__/transactionOutput";
 import Transaction from "../src/lib/transaction";
 import TransactionInput from "../src/lib/transactionInput";
 import TransactionType from "../src/lib/transactionType";
 
 jest.mock("../src/lib/transactionInput");
+jest.mock("../src/lib/transactionOutput");
 
 describe("Transaction tests", () => {
   test("Should be valid (REGULAR default)", () => {
     const tx = new Transaction({
-      txInput: new TransactionInput(),
-      to: "cateiraTo",
+      txInputs: [new TransactionInput()],
+      txOutputs: [new TransactionOutput()],
     } as Transaction);
 
     const valid = tx.isValid();
@@ -18,8 +20,8 @@ describe("Transaction tests", () => {
 
   test("Should NOT be valid (Invalid hash)", () => {
     const tx = new Transaction({
-      txInput: new TransactionInput(),
-      to: "cartairaTo",
+      txInputs: [new TransactionInput()],
+      txOutputs: [new TransactionOutput()],
       type: TransactionType.REGULAR,
       timestamp: Date.now(),
       hash: "abc",
@@ -31,11 +33,11 @@ describe("Transaction tests", () => {
 
   test("Should be valid (FEE)", () => {
     const tx = new Transaction({
-      to: "cartairaTo",
+      txOutputs: [new TransactionOutput()],
       type: TransactionType.FEE,
     } as Transaction);
 
-    tx.txInput = undefined;
+    tx.txInputs = undefined;
     tx.hash = tx.getHash();
 
     const valid = tx.isValid();
@@ -51,12 +53,14 @@ describe("Transaction tests", () => {
 
   test("Should NOT be valid (invalid txInput)", () => {
     const tx = new Transaction({
-      to: "carteiraTo",
-      txInput: new TransactionInput({
-        amount: -10,
-        fromAddress: "carteiraFrom",
-        signature: "abc",
-      } as TransactionInput),
+      txOutputs: [new TransactionOutput()],
+      txInputs: [
+        new TransactionInput({
+          amount: -10,
+          fromAddress: "carteiraFrom",
+          signature: "abc",
+        } as TransactionInput),
+      ],
     } as Transaction);
 
     const valid = tx.isValid();

@@ -9,7 +9,7 @@ export default class TransactionOutput {
   amount: number;
   tx?: string;
 
-  constructor(txOutput: TransactionOutput) {
+  constructor(txOutput?: TransactionOutput) {
     this.toAddress = txOutput?.toAddress || "";
     this.amount = txOutput?.amount || 0;
     this.tx = txOutput?.tx || "";

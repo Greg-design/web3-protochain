@@ -34,6 +34,7 @@ describe("TransactionInput tests", () => {
     const txInput = new TransactionInput({
       amount: 10,
       fromAddress: alice.publicKey,
+      previousTx: "abc",
     } as TransactionInput);
 
     const valid = txInput.isValid();
@@ -44,6 +45,7 @@ describe("TransactionInput tests", () => {
     const txInput = new TransactionInput({
       amount: -10,
       fromAddress: alice.publicKey,
+      previousTx: "abc",
     } as TransactionInput);
     txInput.sign(alice.privateKey);
     const valid = txInput.isValid();
@@ -54,8 +56,19 @@ describe("TransactionInput tests", () => {
     const txInput = new TransactionInput({
       amount: 10,
       fromAddress: alice.publicKey,
+      previousTx: "abc",
     } as TransactionInput);
     txInput.sign(bob.privateKey);
+    const valid = txInput.isValid();
+    expect(valid.success).toBeFalsy();
+  });
+
+  test("Should NOT be valid (invalid previousTx)", () => {
+    const txInput = new TransactionInput({
+      amount: 10,
+      fromAddress: alice.publicKey,
+    } as TransactionInput);
+    txInput.sign(alice.privateKey);
     const valid = txInput.isValid();
     expect(valid.success).toBeFalsy();
   });

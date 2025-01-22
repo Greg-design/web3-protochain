@@ -6,7 +6,6 @@ import morgan from "morgan";
 import Block from "../lib/block";
 import Blockchain from "../lib/blockchain";
 import Transaction from "../lib/transaction";
-import TransactionOutput from "../lib/transactionOutput";
 import Wallet from "../lib/wallet";
 
 /* c8 ignore next */
@@ -102,19 +101,11 @@ app.post("/transactions", (req: Request, res: Response, next: NextFunction) => {
 app.get("/wallets/:wallet", (req: Request, res: Response, next: NextFunction) => {
   const wallet = req.params.wallet;
 
-  //TODO: fazer versão final de UTXO
+  const utxo = blockchain.getUtxo(wallet);
+  const balance = blockchain.getBalance(wallet);
+  const fee = blockchain.getFeePerTx();
 
-  return res.json({
-    balance: 10,
-    fee: blockchain.getFeePerTx(),
-    utxo: [
-      new TransactionOutput({
-        amount: 10,
-        toAddress: wallet,
-        tx: "abc",
-      } as TransactionOutput),
-    ],
-  });
+  return res.json({ balance, fee, utxo });
 });
 
 /* c8 ignore start */

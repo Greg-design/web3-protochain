@@ -76,6 +76,13 @@ describe("BlockchainServer Tests", () => {
     expect(res.body.mempoolIndex).toEqual(0);
   });
 
+  test("GET /wallets/:wallet - Should get balance", async () => {
+    const res = await request(app).get("/wallets/abc");
+
+    expect(res.status).toEqual(200);
+    expect(res.body.balance).toEqual(10);
+  });
+
   test("POST /transactions/ - Should add tx", async () => {
     const tx = new Transaction({
       txInputs: [new TransactionInput()],

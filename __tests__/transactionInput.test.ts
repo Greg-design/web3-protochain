@@ -1,10 +1,13 @@
 import { beforeAll, describe, expect, test } from "@jest/globals";
 import TransactionInput from "../src/lib/transactionInput";
+import TransactionOutput from "../src/lib/transactionOutput";
 import Wallet from "../src/lib/wallet";
 
 describe("TransactionInput tests", () => {
   let alice: Wallet;
   let bob: Wallet;
+
+  const exampleTx: string = "156g16dg16fg1fd5g1dfgh4df8g4df8g4df6g51df6g1dg1f65g1df56g";
 
   beforeAll(() => {
     alice = new Wallet();
@@ -71,5 +74,18 @@ describe("TransactionInput tests", () => {
     txInput.sign(alice.privateKey);
     const valid = txInput.isValid();
     expect(valid.success).toBeFalsy();
+  });
+
+  test("Should create form Txo", () => {
+    const txi = TransactionInput.fromTxo({
+      amount: 10,
+      toAddress: alice.publicKey,
+      tx: exampleTx,
+    } as TransactionOutput);
+    txi.sign(alice.privateKey);
+
+    txi.amount = 1;
+    const result = txi.isValid();
+    expect(result.success).toBeFalsy();
   });
 });
